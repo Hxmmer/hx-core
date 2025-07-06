@@ -1,23 +1,26 @@
-// index.js
-const express = require('express');
-const axios = require('axios');
-require('dotenv').config();
+import express from 'express';
+import axios from 'axios';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.get('/api/price', async (req, res) => {
+app.get('/api/btc-price', async (req, res) => {
   try {
     const response = await axios.get(
       'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd'
     );
     const price = response.data.bitcoin.usd;
-    res.json({ btc_usd: price });
+    res.json({ bitcoinPriceUSD: price });
   } catch (error) {
-    res.status(500).json({ error: 'Fehler beim Abrufen des BTC-Preises' });
+    console.error('Fehler beim Abrufen des Bitcoin-Preises:', error.message);
+    res.status(500).json({ error: 'Fehler beim Abrufen des Bitcoin-Preises' });
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('BTC API läuft!');
+});
+
 app.listen(PORT, () => {
-  console.log(`✅ BTC-Tracker läuft auf http://localhost:${PORT}`);
+  console.log(`Server läuft auf Port ${PORT}`);
 });
