@@ -1,2 +1,2 @@
 // Redirect to the compiled version
-import './dist/index.js';
+import './src/index.ts';
